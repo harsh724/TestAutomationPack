@@ -19,6 +19,7 @@ public class RegressionUI extends TestBase {
 
     List<String> methodList = new ArrayList<>();
     LoginPage login = new LoginPage();
+
     @BeforeMethod
     public void beforeMethod(Method method){
         dataSheetMapping = new HashMap<>();
