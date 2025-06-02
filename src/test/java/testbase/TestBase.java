@@ -2,6 +2,7 @@ package testbase;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import com.relevantcodes.extentreports.NetworkMode;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -32,6 +33,10 @@ public class TestBase {
     public static Properties properties;
     public static Properties objProperties;
     public static HashMap<String, String> dataSheetMapping;
+    public static  int totalFailCount = 0;
+    public static  int totalPassCount = 0;
+    public static  int totalValuesMatchedCount = 0;
+
     public static int rowNum;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
     String timeStamp = sdf.format(new Date());
@@ -95,9 +100,29 @@ public class TestBase {
     public static String getObjProperty(String key){
         return objProperties.getProperty(key);
     }
+    public static void valuesMatched(String description, String expectedResult, String actualResult){
+        try{
+            totalValuesMatchedCount-=-1;
+            if(expectedResult == null && actualResult == null){
+                logger.log(LogStatus.PASS, "Result for : "+description+" is matched with expected : "+ expectedResult+ " . Where Actual Value is :"+ actualResult);
+                totalPassCount-=-1;
+            }
+            else if(expectedResult.equals(actualResult)){
+                logger.log(LogStatus.PASS, "Result for : "+description+" is matched with expected : "+ expectedResult+ " . Where Actual Value is :"+ actualResult);
+                totalPassCount-=-1;
+            }
+            else{
+                logger.log(LogStatus.FAIL, "Result for : "+description+" is not matched with expected : "+ expectedResult+ " . Where Actual Value is :"+ actualResult);
+                totalFailCount-=-1;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @AfterSuite
     public void afterSuite(){
         driver.quit();
     }
+
 }
