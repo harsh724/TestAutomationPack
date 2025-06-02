@@ -1,8 +1,9 @@
 package utilities;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.DataProvider;
@@ -47,11 +48,32 @@ public class Utilities extends TestBase {
     }
     public static WebElement waitForElementToBeClickable(String key, int duration){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
-        return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
+        return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(getObjProperty(key))));
     }
     public static WebElement waitForElementToBeVisible(String key, int duration){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(key)));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(getObjProperty(key))));
+    }
+    public static Object getFieldValueRecursive(Object json, String key){
+        if(json instanceof JSONObject jsonObject){
+            if(jsonObject.has(key)){
+                return jsonObject.get(key);
+            }
+            for(String jsonKey : jsonObject.keySet()){
+                Object value = jsonObject.get(jsonKey);
+                Object result = getFieldValueRecursive(value, key);
+                if(result != null){
+                    return result;
+                }
+            }
+            }
+        else if(json instanceof JSONArray jsonArray){
+            for(int i =0; i<jsonArray.length(); i++){
+                Object result = getFieldValueRecursive(jsonArray.get(i), key);
+                if(result!= null) return result;
+            }
+        }
+        return null;
     }
 
 

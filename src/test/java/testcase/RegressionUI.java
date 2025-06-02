@@ -44,8 +44,8 @@ public class RegressionUI extends TestBase {
         if(data.get("Run").equalsIgnoreCase("yes")) {
             try {
                 login.login();
-                onClick("//div[@title=\"Timesheets\"]/../button");
-                waitForElementToBeVisible("//h6[text()=\"Select Employee\"]", 30);
+                onClick("timeSheetButton");
+                waitForElementToBeVisible("selectEmployee", 30);
                 excel.setCellData("timeSheet","execution status", rowNum, "done" );
                 rowNum++;
             }
