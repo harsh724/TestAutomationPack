@@ -3,7 +3,10 @@ package utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.DataProvider;
@@ -62,31 +65,37 @@ public class Utilities extends TestBase {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(getObjProperty(key))));
     }
-    public static Object getFieldValueRecursive(Object json, String key){
-        if(json instanceof JSONObject jsonObject){
-            if(jsonObject.has(key)){
+    public static Object getFieldValueRecursive(Object json, String key) {
+        if (json instanceof JSONObject jsonObject) {
+            if (jsonObject.has(key)) {
                 return jsonObject.get(key);
             }
-            for(String jsonKey : jsonObject.keySet()){
+            for (String jsonKey : jsonObject.keySet()) {
                 Object value = jsonObject.get(jsonKey);
                 Object result = getFieldValueRecursive(value, key);
-                if(result != null){
+                if (result != null) {
                     return result;
                 }
             }
-            }
-        else if(json instanceof JSONArray jsonArray){
-            for(int i =0; i<jsonArray.length(); i++){
+        } else if (json instanceof JSONArray jsonArray) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 Object result = getFieldValueRecursive(jsonArray.get(i), key);
-                if(result!= null) return result;
+                if (result != null) return result;
             }
         }
         return null;
     }
 
+<<<<<<< HEAD
     public static List<WebElement> getWebElementList(String key){
         return driver.findElements(By.xpath(getObjProperty(key)));
     }
 
+=======
+    // get Actions class object
+    public static Actions getActionsObject (WebDriver driver) {
+        return new Actions(driver);
+        }
+    }
+>>>>>>> 56a637f31f6679ef303dc60bbb16958031fd6cc3
 
-}
