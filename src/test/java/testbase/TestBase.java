@@ -123,7 +123,7 @@ public class TestBase {
         // End test and flush report
         extent.endTest(logger);
         extent.flush();
-        //extent.close();
+        extent.close();
     }
 
     @AfterSuite

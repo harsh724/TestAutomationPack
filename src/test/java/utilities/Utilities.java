@@ -46,6 +46,13 @@ public class Utilities extends TestBase {
             throw new RuntimeException(e);
         }
     }
+    public static String getText(String key){
+        try {
+            return waitForElementToBeVisible(key, 30).getText();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static WebElement waitForElementToBeClickable(String key, int duration){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
         return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(getObjProperty(key))));

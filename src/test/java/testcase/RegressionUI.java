@@ -1,5 +1,6 @@
 package testcase;
 
+import com.relevantcodes.extentreports.LogStatus;
 import org.testng.annotations.*;
 import pages.LoginPage;
 import testbase.TestBase;
@@ -12,8 +13,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-import static utilities.Utilities.onClick;
-import static utilities.Utilities.waitForElementToBeVisible;
+import static utilities.Utilities.*;
 
 public class RegressionUI extends TestBase {
 
@@ -34,25 +34,41 @@ public class RegressionUI extends TestBase {
         path = System.getProperty("user.dir")+getProperty("excelFilePathUI");
         excel = new ExcelReader(path);
     }
-    @AfterMethod
+    /*@AfterMethod
     public void afterMethod(){
         login.logOut();
-    }
+    }*/
 
     @Test(dataProviderClass = Utilities.class, dataProvider = "dp", priority = 1, enabled = true)
     public void timeSheet(Hashtable<String, String> data, Method m){
         if(data.get("Run").equalsIgnoreCase("yes")) {
+            logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
+            String sheetName = m.getName();
             try {
                 login.login();
                 onClick("timeSheetButton");
                 waitForElementToBeVisible("selectEmployee", 30);
+                //onClick("timesheetEdit");
+                onClick("attendance");
+                onClick("myRecords");
+                String duration = getText("duration");
+                valuesMatched("duration", "10.00", duration);
                 excel.setCellData("timeSheet","execution status", rowNum, "done" );
                 rowNum++;
+                logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
+                login.logOut();
             }
             catch (Exception e) {
                 rowNum++;
+                logger.log(LogStatus.FAIL, e.getMessage());
                 throw new RuntimeException(e);
             }
         }
+        else{
+            rowNum++;
+        }
+        extent.endTest(logger);
+        rowNum++;
+
     }
 }
