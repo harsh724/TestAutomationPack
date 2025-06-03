@@ -54,11 +54,17 @@ public class RegressionUI extends TestBase {
                 onClick("editButton");
                 onClick("trash");
                 sendKeys("project", data.get("Project"));
+                Thread.sleep(3000);
                 onClick("projectSelection");
                 onClick("activity");
-                List<WebElement> activityList = driver.findElements(By.xpath(getObjProperty("activityList")));
-                for(WebElement we : activityList){
-                    System.out.println(we.getText());
+                Thread.sleep(3000);
+                for(WebElement we : getWebElementList("activityList")){
+                    String activity = we.getText();
+                    System.out.println(activity);
+                    if(data.get("Activity").equalsIgnoreCase(activity)) {
+                        we.click();
+                        break;
+                    }
                 }
                 excel.setCellData("timeSheet","execution status", rowNum, "done" );
                 rowNum++;
