@@ -1,6 +1,8 @@
 package testcase;
 
 import com.relevantcodes.extentreports.LogStatus;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.*;
 import pages.LoginPage;
 import testbase.TestBase;
@@ -48,11 +50,16 @@ public class RegressionUI extends TestBase {
                 login.login();
                 onClick("timeSheetButton");
                 waitForElementToBeVisible("selectEmployee", 30);
-                //onClick("timesheetEdit");
-                onClick("attendance");
-                onClick("myRecords");
-                String duration = getText("duration");
-                valuesMatched("duration", "10.00", duration);
+                onClick("viewButton");
+                onClick("editButton");
+                onClick("trash");
+                sendKeys("project", data.get("Project"));
+                onClick("projectSelection");
+                onClick("activity");
+                List<WebElement> activityList = driver.findElements(By.xpath(getObjProperty("activityList")));
+                for(WebElement we : activityList){
+                    System.out.println(we.getText());
+                }
                 excel.setCellData("timeSheet","execution status", rowNum, "done" );
                 rowNum++;
                 logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
@@ -68,7 +75,5 @@ public class RegressionUI extends TestBase {
             rowNum++;
         }
         extent.endTest(logger);
-        rowNum++;
-
     }
 }
