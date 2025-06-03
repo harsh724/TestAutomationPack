@@ -36,6 +36,7 @@ public class TestBase {
     public static  int totalFailCount = 0;
     public static  int totalPassCount = 0;
     public static  int totalValuesMatchedCount = 0;
+    public static String allReportLogging;
 
     public static int rowNum;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -44,7 +45,7 @@ public class TestBase {
     public void driverInitiator(){
         if(extent == null){
             extent = new ExtentReports(System.getProperty("user.dir")+"//Report//Archive/ExtentReport_"+timeStamp+"_.html", true, NetworkMode.OFFLINE);
-            extent.loadConfig(new File(System.getProperty("user.dir")+"//Reports//ReportConfig.xml"));
+            extent.loadConfig(new File(System.getProperty("user.dir")+"//Report//ReportsConfig.xml"));
         }
         if(properties == null){
             properties = new Properties();
@@ -72,16 +73,15 @@ public class TestBase {
         }
 
         if(getProperty("webDriverRequired").equalsIgnoreCase("yes") && driver == null) {
-            driver = new ChromeDriver();
-            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/webdriver/chromedriver");
             ChromeOptions options = new ChromeOptions();
             //LoggingPreferences loggingPreferences = new LoggingPreferences();
             //loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
             options.addArguments("--remote-debugging-pipe");
             options.addArguments("--diable-gpu");
             options.addArguments("--diable-dev-shm-usage");
+            driver = new ChromeDriver(options);
+            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/webdriver/chromedriver");
             //options.setCapability("goog:loggingPrefs", loggingPreferences);
-
             driver.get(getProperty("baseURL"));
             driver.manage().window().maximize();
             driver.manage().deleteAllCookies();
@@ -119,10 +119,19 @@ public class TestBase {
             e.printStackTrace();
         }
     }
+    public static void tearDown() {
+        // End test and flush report
+        extent.endTest(logger);
+        extent.flush();
+        //extent.close();
+    }
 
     @AfterSuite
     public void afterSuite(){
-        driver.quit();
+        if(getProperty("webDriverRequired").equalsIgnoreCase("yes")) {
+            driver.quit();
+        }
+        tearDown();
     }
 
 }

@@ -1,7 +1,11 @@
 package testcase;
 
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import pages.LoginPage;
+import services.JSONServices;
 import testbase.TestBase;
 import utilities.ExcelReader;
 import utilities.Utilities;
@@ -15,8 +19,7 @@ import java.util.List;
 import static utilities.Utilities.onClick;
 import static utilities.Utilities.waitForElementToBeVisible;
 
-public class RegressionUI extends TestBase {
-
+public class RegressionAPI extends TestBase {
     List<String> methodList = new ArrayList<>();
     LoginPage login = new LoginPage();
 
@@ -31,22 +34,25 @@ public class RegressionUI extends TestBase {
     }
     @BeforeTest
     public void beforeTest(){
-        path = System.getProperty("user.dir")+getProperty("excelFilePathUI");
+        path = System.getProperty("user.dir")+getProperty("excelFilePathAPI");
         excel = new ExcelReader(path);
     }
-    @AfterMethod
-    public void afterMethod(){
-        login.logOut();
-    }
+
 
     @Test(dataProviderClass = Utilities.class, dataProvider = "dp", priority = 1, enabled = true)
-    public void timeSheet(Hashtable<String, String> data, Method m){
+    public void apiTestingDemo(Hashtable<String, String> data, Method m){
         if(data.get("Run").equalsIgnoreCase("yes")) {
+            logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
+            String sheetName = m.getName();
             try {
-                login.login();
-                onClick("timeSheetButton");
-                waitForElementToBeVisible("selectEmployee", 30);
-                excel.setCellData("timeSheet","execution status", rowNum, "done" );
+                String response = new JSONServices().jsonRequest("Automation Test", "POST");
+                //String nodeParsingForResponse =
+                new JSONServices();
+                System.out.println(response);
+                excel.setCellData(sheetName, "Response", rowNum, response);
+                excel.setCellData(sheetName, "execution status", rowNum, "Done");
+                valuesMatched("title check", "Automation Test", JSONServices.response.jsonPath().getString("title"));
+                valuesMatched("id check", "101", JSONServices.response.jsonPath().getString("id"));
                 rowNum++;
             }
             catch (Exception e) {

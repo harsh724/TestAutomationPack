@@ -1,7 +1,7 @@
 package services;
 
-import io.restassured.http.ContentType;
-import org.openqa.selenium.devtools.v135.network.model.Response;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;  // ✅ This is the one you want
 import payloads.JSONPayload;
 import testbase.TestBase;
 import java.util.*;
@@ -13,13 +13,16 @@ public class JSONServices extends TestBase {
     public static String requestBody;
 
     public String jsonRequest(String param1, String param2){
+        RestAssured.baseURI = "https://jsonplaceholder.typicode.com/";
         requestBody = new JSONPayload().firstPayload(param1, param2);
-        response = (Response) given().contentType(ContentType.JSON)
-                .header("", "")
+        response = (Response) given()
+                .header("Content-Type", "application/json")
                 .body(requestBody)
                 .when().relaxedHTTPSValidation()
-                .post("")
-                .then().extract().response();
-        return response.toString();
+                .post("/posts")
+                .then()
+                .statusCode(201).extract().response();
+        //System.out.println(response.asString());
+        return response.asString();
     }
 }

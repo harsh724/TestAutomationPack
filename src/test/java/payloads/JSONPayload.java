@@ -1,10 +1,12 @@
 package payloads;
 
 public class JSONPayload {
-    public String firstPayload(String param1, String param2){
-        return "{" +
-                " \"field1\": \"" + param1+"\",\n"+
-                 "\"field2\": \"" + param2+"\",\n"+
+    public String firstPayload(String key1, String key2){
+        return "" +
+                "{\n"+
+                    "   \"title\": \"" +key1+"\",\n"+
+                    "   \"body\": \"This is a sample "+key2+ " request\",\n"+
+                    "   \"userId\": 101"+"\n"+
                 "}";
     }
 }

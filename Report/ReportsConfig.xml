@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <theme>standard</theme>
+    <documentTitle>Automation Test Report</documentTitle>
+    <reportName>Regression Suite</reportName>
+    <encoding>utf-8</encoding>
+    <protocol>http</protocol>
+    <timestampFormat>yyyy-MM-dd HH:mm:ss</timestampFormat>
+</configuration>
