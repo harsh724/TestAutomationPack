@@ -51,6 +51,12 @@ public class Utilities extends TestBase {
             throw new RuntimeException(e);
         }
     }
+
+    public static void sendKeyswithJavaScript(WebDriver driver, String command, WebElement inputElement) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+        jsExecutor.executeScript("arguments[0].value='{0}';", command, inputElement);
+    }
+
     public static String getText(String key){
         try {
             return waitForElementToBeVisible(key, 30).getText();
@@ -91,14 +97,13 @@ public class Utilities extends TestBase {
         return driver.findElements(By.xpath(getObjProperty(key)));
     }
 
-    // get Actions class object
     public static JavascriptExecutor getJSExecutorInstance(WebDriver driver) {
         return (JavascriptExecutor)driver;
     }
 
-    public static void executeJSCommand(WebDriver driver, String command) {
+    public static void executeJSCommand(WebDriver driver, String command, WebElement inputElement) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
-        jsExecutor.executeScript("arguments[0].execute{0}", command);
+        jsExecutor.executeScript("arguments[0].execute{0}", command, inputElement);
     }
 
     public static void takeFullScreenshot(WebDriver driver, String inputLocation) throws IOException {
