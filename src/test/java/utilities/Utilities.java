@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Hashtable;
+import java.util.List;
 
 public class Utilities extends TestBase {
 
@@ -86,6 +87,11 @@ public class Utilities extends TestBase {
         return null;
     }
 
+    public static List<WebElement> getWebElementList(String key){
+        return driver.findElements(By.xpath(getObjProperty(key)));
+    }
+
+    // get Actions class object
     public static JavascriptExecutor getJSExecutorInstance(WebDriver driver) {
         return (JavascriptExecutor)driver;
     }
