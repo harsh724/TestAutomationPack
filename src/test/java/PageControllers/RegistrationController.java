@@ -4,11 +4,9 @@ import org.openqa.selenium.WebDriver;
 import pages.AutomationDemo.RegistrationPage;
 
 public class RegistrationController {
-    private WebDriver driver;
-    private RegistrationPage registrationPage;
+    private final RegistrationPage registrationPage;
 
     public RegistrationController(WebDriver driver) {
-        this.driver = driver;
         this.registrationPage = new RegistrationPage(driver);
     }
 
