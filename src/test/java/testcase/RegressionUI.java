@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import static pages.Timesheet.editTimesheet;
 import static utilities.Utilities.*;
 
 public class RegressionUI extends TestBase {
@@ -36,10 +37,10 @@ public class RegressionUI extends TestBase {
         path = System.getProperty("user.dir")+getProperty("excelFilePathUI");
         excel = new ExcelReader(path);
     }
-    /*@AfterMethod
+    @AfterMethod
     public void afterMethod(){
         login.logOut();
-    }*/
+    }
 
     @Test(dataProviderClass = Utilities.class, dataProvider = "dp", priority = 1, enabled = true)
     public void timeSheet(Hashtable<String, String> data, Method m){
@@ -47,29 +48,11 @@ public class RegressionUI extends TestBase {
             logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
             String sheetName = m.getName();
             try {
-                login.login();
-                onClick("timeSheetButton");
-                waitForElementToBeVisible("selectEmployee", 30);
-                onClick("viewButton");
-                onClick("editButton");
-                onClick("trash");
-                sendKeys("project", data.get("Project"));
-                Thread.sleep(3000);
-                onClick("projectSelection");
-                onClick("activity");
-                Thread.sleep(3000);
-                for(WebElement we : getWebElementList("activityList")){
-                    String activity = we.getText();
-                    System.out.println(activity);
-                    if(data.get("Activity").equalsIgnoreCase(activity)) {
-                        we.click();
-                        break;
-                    }
-                }
-                excel.setCellData("timeSheet","execution status", rowNum, "done" );
+                login.logOut();
+                editTimesheet(data);
+                excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
                 logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
-                login.logOut();
             }
             catch (Exception e) {
                 rowNum++;

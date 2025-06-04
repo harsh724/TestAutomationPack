@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <theme>standard</theme>
+    <theme>dark</theme>
     <documentTitle>Automation Test Report</documentTitle>
     <reportName>Regression Suite</reportName>
     <encoding>utf-8</encoding>

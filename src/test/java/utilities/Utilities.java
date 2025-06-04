@@ -72,6 +72,11 @@ public class Utilities extends TestBase {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(getObjProperty(key))));
     }
+
+    public static WebElement waitForElementToBePresent(String key, int duration){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
+        return wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(getObjProperty(key))));
+    }
     public static Object getFieldValueRecursive(Object json, String key) {
         if (json instanceof JSONObject jsonObject) {
             if (jsonObject.has(key)) {
@@ -97,9 +102,7 @@ public class Utilities extends TestBase {
         return driver.findElements(By.xpath(getObjProperty(key)));
     }
 
-<<<<<<< HEAD
     // get Actions class object
-=======
     public static JavascriptExecutor getJSExecutorInstance(WebDriver driver) {
         return (JavascriptExecutor)driver;
     }
@@ -117,7 +120,6 @@ public class Utilities extends TestBase {
         FileUtils.copyFile(sc,ssLocation);
     }
 
->>>>>>> 18376a86e92e03a96ec4bbddd2ebb18f399ecc50
     public static Actions getActionsObject (WebDriver driver) {
         return new Actions(driver);
         }
