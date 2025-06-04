@@ -86,16 +86,13 @@ public class Utilities extends TestBase {
         return null;
     }
 
-<<<<<<< HEAD
     public static List<WebElement> getWebElementList(String key){
         return driver.findElements(By.xpath(getObjProperty(key)));
     }
 
-=======
     // get Actions class object
     public static Actions getActionsObject (WebDriver driver) {
         return new Actions(driver);
         }
     }
->>>>>>> 56a637f31f6679ef303dc60bbb16958031fd6cc3
 
