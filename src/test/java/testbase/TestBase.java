@@ -7,6 +7,10 @@ import com.relevantcodes.extentreports.NetworkMode;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -76,14 +80,12 @@ public class TestBase {
             ChromeOptions options = new ChromeOptions();
             //LoggingPreferences loggingPreferences = new LoggingPreferences();
             //loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
-            options.addArguments("--remote-debugging-pipe");
-            options.addArguments("--diable-gpu");
-            options.addArguments("--diable-dev-shm-usage");
+            options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
             driver = new ChromeDriver(options);
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/webdriver/chromedriver");
             //options.setCapability("goog:loggingPrefs", loggingPreferences);
             driver.get(getProperty("baseURL"));
-            driver.manage().window().maximize();
+            //driver.manage().window().maximize();
             driver.manage().deleteAllCookies();
             LoginPage login = new LoginPage();
             try {
@@ -132,6 +134,41 @@ public class TestBase {
             driver.quit();
         }
         tearDown();
+    }
+
+    // get browser instance based on user input (WILL USE ENUM INSTEAD OF INPUT STRING)
+    public static WebDriver launchBrowser(String browserName) {
+        if(browserName.equalsIgnoreCase("chrome")) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
+            driver = new ChromeDriver(options);
+            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/webdriver/chromedriver");
+            driver.get(getProperty("baseURL"));
+            driver.manage().deleteAllCookies();
+            return driver;
+        }
+
+        else if (browserName.equalsIgnoreCase("edge")) {
+            EdgeOptions options = new EdgeOptions();
+            options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
+            driver = new EdgeDriver(options);
+            driver.get(getProperty("baseURL"));
+            driver.manage().deleteAllCookies();
+            return driver;
+        }
+
+        else if (browserName.equalsIgnoreCase("firefox")) {
+            FirefoxOptions options = new FirefoxOptions();
+            options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
+            driver = new FirefoxDriver(options);
+            driver.get(getProperty("baseURL"));
+            driver.manage().deleteAllCookies();
+            return driver;
+        }
+
+        else {
+            throw new RuntimeException("Invalid Browser input");
+        }
     }
 
 }

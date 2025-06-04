@@ -1,19 +1,20 @@
 package utilities;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.DataProvider;
 import testbase.TestBase;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -50,6 +51,12 @@ public class Utilities extends TestBase {
             throw new RuntimeException(e);
         }
     }
+
+    public static void sendKeyswithJavaScript(WebDriver driver, String command, WebElement inputElement) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+        jsExecutor.executeScript("arguments[0].value='{0}';", command, inputElement);
+    }
+
     public static String getText(String key){
         try {
             return waitForElementToBeVisible(key, 30).getText();
@@ -90,7 +97,27 @@ public class Utilities extends TestBase {
         return driver.findElements(By.xpath(getObjProperty(key)));
     }
 
+<<<<<<< HEAD
     // get Actions class object
+=======
+    public static JavascriptExecutor getJSExecutorInstance(WebDriver driver) {
+        return (JavascriptExecutor)driver;
+    }
+
+    public static void executeJSCommand(WebDriver driver, String command, WebElement inputElement) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+        jsExecutor.executeScript("arguments[0].execute{0}", command, inputElement);
+    }
+
+    public static void takeFullScreenshot(WebDriver driver, String inputLocation) throws IOException {
+        String currentDir = System.getProperty("user.dir");
+        String saveLocation = inputLocation == null ? currentDir : inputLocation;
+        File sc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        File ssLocation = new File(String.format("{0}/screenshot-{1}.png", saveLocation, LocalDateTime.now().toString()));
+        FileUtils.copyFile(sc,ssLocation);
+    }
+
+>>>>>>> 18376a86e92e03a96ec4bbddd2ebb18f399ecc50
     public static Actions getActionsObject (WebDriver driver) {
         return new Actions(driver);
         }
