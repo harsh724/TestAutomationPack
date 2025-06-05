@@ -11,11 +11,19 @@ import static utilities.Utilities.sendKeys;
 import static utilities.Utilities.waitForElementToBePresent;
 
 public class Timesheet extends TestBase {
-    public void attendance(){
+    public static void editAttendance(Hashtable<String, String> data){
+        onClick("timeSheetButton");
         onClick("attendance");
         onClick("myRecords");
+        onClick("editPencil");
+        sendKeys("punchInTime", data.get("Punch In Time"));
+        sendKeys("punchOutTime", data.get("Punch Out Time"));
+        onClick("saveButton");
+        waitForElementToBeVisible("duration", 30);
         String duration = getText("duration");
-        valuesMatched("duration", "10.00", duration);
+        valuesMatched("duration", data.get("hours"), "duration");
+        onClick("dashboadButton");
+
     }
     public static void editTimesheet(Hashtable<String, String> data){
         try {

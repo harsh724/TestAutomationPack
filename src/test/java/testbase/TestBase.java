@@ -48,7 +48,8 @@ public class TestBase {
     @BeforeSuite
     public void driverInitiator(){
         if(extent == null){
-            extent = new ExtentReports(System.getProperty("user.dir")+"//Report//Archive/ExtentReport_"+timeStamp+"_.html", true, NetworkMode.OFFLINE);
+            extent = new ExtentReports(System.getProperty("user.dir")+"//Report//Archive/ExtentReport_"
+                    +timeStamp+"_.html", true, NetworkMode.OFFLINE);
             extent.loadConfig(new File(System.getProperty("user.dir")+"//Report//ReportsConfig.xml"));
         }
         if(properties == null){

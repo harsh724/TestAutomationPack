@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import static pages.Timesheet.editAttendance;
 import static pages.Timesheet.editTimesheet;
 import static utilities.Utilities.*;
 
@@ -36,11 +37,17 @@ public class RegressionUI extends TestBase {
     public void beforeTest(){
         path = System.getProperty("user.dir")+getProperty("excelFilePathUI");
         excel = new ExcelReader(path);
+        login.login();
     }
-    @AfterMethod
+    /*@AfterMethod
     public void afterMethod(){
+
+    }*/
+    @AfterTest
+    public void afterTest(){
         login.logOut();
     }
+
 
     @Test(dataProviderClass = Utilities.class, dataProvider = "dp", priority = 1, enabled = true)
     public void timeSheet(Hashtable<String, String> data, Method m){
@@ -48,7 +55,6 @@ public class RegressionUI extends TestBase {
             logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
             String sheetName = m.getName();
             try {
-                login.logOut();
                 editTimesheet(data);
                 excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
@@ -65,4 +71,30 @@ public class RegressionUI extends TestBase {
         }
         extent.endTest(logger);
     }
+
+    @Test(dataProviderClass =  Utilities.class, dataProvider = "dp", priority = 2, enabled = true)
+    public void attendance(Hashtable<String, String> data, Method m){
+        if(data.get("Run").equalsIgnoreCase("yes")) {
+            logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
+            String sheetName = m.getName();
+            try {
+                //login.login();
+                editAttendance(data);
+                excel.setCellData(sheetName,"execution status", rowNum, "done" );
+                rowNum++;
+                logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
+            }
+            catch (Exception e) {
+                rowNum++;
+                logger.log(LogStatus.FAIL, e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
+        else{
+            rowNum++;
+        }
+        extent.endTest(logger);
+
+    }
+
 }

@@ -30,7 +30,8 @@ public class Utilities extends TestBase {
         for(int rowNum = 2; rowNum<= rows; rowNum++){
             table = new Hashtable<>();
             for (int colNum = 0; colNum < cols; colNum++){
-                table.put(excel.getCellData(sheetName, colNum, 1), excel.getCellData(sheetName, colNum, rowNum));
+                table.put(excel.getCellData(sheetName, colNum, 1),
+                        excel.getCellData(sheetName, colNum, rowNum));
                 data[rowNum-2][0] = table;
             }
         }
