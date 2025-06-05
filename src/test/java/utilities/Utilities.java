@@ -53,7 +53,7 @@ public class Utilities extends TestBase {
         }
     }
 
-    public static void sendKeyswithJavaScript(WebDriver driver, String command, WebElement inputElement) {
+    public static void sendKeysWithJavaScript(WebDriver driver, String command, WebElement inputElement) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
         jsExecutor.executeScript("arguments[0].value='{0}';", command, inputElement);
     }
