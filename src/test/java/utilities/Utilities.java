@@ -3,6 +3,7 @@ package utilities;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jspecify.annotations.Nullable;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -120,7 +121,14 @@ public class Utilities extends TestBase {
         jsExecutor.executeScript("arguments[0].execute{0}", command, inputElement);
     }
 
-    public static void takeFullScreenshot(WebDriver driver, String inputLocation) throws IOException {
+    public static void takeFullScreenshot(WebDriver driver) throws IOException {
+        String currentDir = System.getProperty("user.dir");
+        File sc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        File ssLocation = new File(String.format("{0}/screenshot-{1}.png", currentDir, LocalDateTime.now().toString()));
+        FileUtils.copyFile(sc,ssLocation);
+    }
+
+    public static void takeFullScreenshot(WebDriver driver, @Nullable String inputLocation) throws IOException {
         String currentDir = System.getProperty("user.dir");
         String saveLocation = inputLocation == null ? currentDir : inputLocation;
         File sc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
@@ -131,5 +139,20 @@ public class Utilities extends TestBase {
     public static Actions getActionsObject (WebDriver driver) {
         return new Actions(driver);
         }
+
+    public static WebElement getShadowElement(WebDriver driver, String... selectors) {
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        StringBuilder script = new StringBuilder("return document");
+        for(String selector : selectors) {
+            script.append(".shadowRoot");
+        }
+        if(selectors.length > 0) {
+            String lastSelector = selectors[selectors.length - 1];
+            script.setLength(script.length() - ".shadowRoot".length());
+            script.append(".querySelector('").append(lastSelector).append("')");
+        }
+
+        return (WebElement) js.executeScript(script.toString());
     }
+}
 
