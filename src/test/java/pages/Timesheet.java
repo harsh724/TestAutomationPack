@@ -16,8 +16,23 @@ public class Timesheet extends TestBase {
         onClick("attendance");
         onClick("myRecords");
         onClick("editPencil");
+        /*clearText("punchInTime");
         sendKeys("punchInTime", data.get("Punch In Time"));
-        sendKeys("punchOutTime", data.get("Punch Out Time"));
+        clearText("punchOutTime");
+        sendKeys("punchOutTime", data.get("Punch Out Time"));*/
+        onClick("punchInClock");
+        clearText("hourText");
+        sendKeysWithJavaScript("hourText", "09");
+        clearText("minuteText");
+        sendKeysWithJavaScript("minuteText", "00");
+        onClick("PM");
+        onClick("AM");
+        onClick("punchOutClock");
+        clearText("hourText");
+        sendKeys("hourText", "06");
+        clearText("minuteText");
+        sendKeys("minuteText", "00");
+        onClick("PM");
         onClick("saveButton");
         waitForElementToBeVisible("duration", 30);
         String duration = getText("duration");

@@ -52,10 +52,17 @@ public class Utilities extends TestBase {
             throw new RuntimeException(e);
         }
     }
+    public static void clearText(String key){
+        try {
+            waitForElementToBeVisible(key, 30).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    public static void sendKeysWithJavaScript(WebDriver driver, String command, WebElement inputElement) {
+    public static void sendKeysWithJavaScript(String key, String command) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
-        jsExecutor.executeScript("arguments[0].value='{0}';", command, inputElement);
+        jsExecutor.executeScript("arguments[0].value='{0}';", command, waitForElementToBeVisible(key, 30));
     }
 
     public static String getText(String key){
