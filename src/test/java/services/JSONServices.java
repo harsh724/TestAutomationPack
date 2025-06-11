@@ -25,4 +25,15 @@ public class JSONServices extends TestBase {
         //System.out.println(response.asString());
         return response.asString();
     }
+
+    public String customAPIRequest(){
+        RestAssured.baseURI= "https://6842bb73e1347494c31dbff0.mockapi.io/harsh/api";
+        response = given().when()
+                .relaxedHTTPSValidation()
+                .get("/harshAPI")
+                .then().statusCode(200)
+                .extract()
+                .response();
+        return  response.asString();
+    }
 }

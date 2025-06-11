@@ -1,5 +1,7 @@
 package testcase;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -46,13 +48,23 @@ public class RegressionAPI extends TestBase {
             String sheetName = m.getName();
             try {
                 String response = new JSONServices().jsonRequest("Automation Test", "POST");
-                //String nodeParsingForResponse =
                 new JSONServices();
                 System.out.println(response);
                 excel.setCellData(sheetName, "Response", rowNum, response);
                 excel.setCellData(sheetName, "execution status", rowNum, "Done");
                 valuesMatched("title check", "Automation Test", JSONServices.response.jsonPath().getString("title"));
                 valuesMatched("id check", "101", JSONServices.response.jsonPath().getString("id"));
+                /*String response2 = new JSONServices().customAPIRequest();
+                new JSONServices();
+                ObjectMapper mapper = new ObjectMapper();;
+                JsonNode response2Paring = mapper.readTree(response2);
+                for(JsonNode node : response2Paring){
+                    if(node.get("id").asText().equals("2")){
+                        String state = node.get("address").get("state").asText();
+                        System.out.println("State for ID 2 is: " + state);
+                    }
+                }
+                System.out.println(response2);*/
                 rowNum++;
             }
             catch (Exception e) {
@@ -61,4 +73,5 @@ public class RegressionAPI extends TestBase {
             }
         }
     }
+
 }

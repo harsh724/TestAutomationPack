@@ -1,8 +1,11 @@
 package testcase;
 
+import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.*;
 import pages.LoginPage;
 import testbase.TestBase;
@@ -78,7 +81,6 @@ public class RegressionUI extends TestBase {
             logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
             String sheetName = m.getName();
             try {
-                //login.login();
                 editAttendance(data);
                 excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
@@ -87,11 +89,15 @@ public class RegressionUI extends TestBase {
             catch (Exception e) {
                 rowNum++;
                 logger.log(LogStatus.FAIL, e.getMessage());
+                e.printStackTrace();
+                Assert.fail();
                 throw new RuntimeException(e);
+
             }
         }
         else{
             rowNum++;
+            throw new SkipException("Skipping this test due to configuration or condition");
         }
         extent.endTest(logger);
 
