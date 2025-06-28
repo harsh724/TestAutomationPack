@@ -120,6 +120,11 @@ public class Utilities extends TestBase {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
         jsExecutor.executeScript("arguments[0].execute{0}", command, inputElement);
     }
+    public static void executeJSCommand(WebDriver driver, String command) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+        jsExecutor.executeScript(command);
+    }
+
 
     public static void takeFullScreenshot(WebDriver driver) throws IOException {
         String currentDir = System.getProperty("user.dir");

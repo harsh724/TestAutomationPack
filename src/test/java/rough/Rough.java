@@ -1,13 +1,19 @@
 package rough;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import testbase.TestBase;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
-
-public class Rough {
+public class Rough extends TestBase {
     public int maxNum = 120;
     public static void main(String[] args) {
+
+        //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         /*String str = "my name is harsh";
         String[] arr = str.split(" ");
