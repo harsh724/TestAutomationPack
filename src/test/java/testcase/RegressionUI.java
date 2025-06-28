@@ -1,15 +1,6 @@
 package testcase;
 
-import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.apache.commons.io.FileUtils;
-import org.apache.poi.ss.formula.functions.Column;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.*;
@@ -18,7 +9,6 @@ import testbase.TestBase;
 import utilities.ExcelReader;
 import utilities.Utilities;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,10 +16,9 @@ import java.util.Hashtable;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static pages.PIMPage.deleteRecord;
+import static pages.PIMPage.editRecord;
 import static pages.Timesheet.editAttendance;
 import static pages.Timesheet.editTimesheet;
-import static utilities.Utilities.*;
 
 public class RegressionUI extends TestBase {
 
@@ -66,8 +55,35 @@ public class RegressionUI extends TestBase {
             logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
             String sheetName = m.getName();
             try {
+                editTimesheet(data);
+
+                excel.setCellData(sheetName,"execution status", rowNum, "done" );
+                rowNum++;
+                /*File scr = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+                File des = new File("");
+                FileUtils.copyFile(scr, des);*/
+                logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
+            }
+            catch (Exception e) {
+                rowNum++;
+                logger.log(LogStatus.FAIL, e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
+        else{
+            rowNum++;
+        }
+        extent.endTest(logger);
+    }
+
+    @Test(dataProviderClass = Utilities.class, dataProvider = "dp", priority = 1, enabled = true)
+    public void pimUpdate(Hashtable<String, String> data, Method m){
+        if(data.get("Run").equalsIgnoreCase("yes")) {
+            logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
+            String sheetName = m.getName();
+            try {
                 //editTimesheet(data);
-                deleteRecord();
+                editRecord();
 
                 excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
