@@ -15,9 +15,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
 import static pages.PIMPage.editRecord;
-import static pages.Timesheet.editAttendance;
+import static pages.Timesheet.*;
 import static pages.Timesheet.editTimesheet;
 
 public class RegressionUI extends TestBase {
@@ -83,23 +82,22 @@ public class RegressionUI extends TestBase {
             String sheetName = m.getName();
             try {
                 //editTimesheet(data);
-                editRecord();
-
+                editRecord(data);
                 excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
-                /*File scr = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-                File des = new File("");
-                FileUtils.copyFile(scr, des);*/
                 logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
             }
             catch (Exception e) {
                 rowNum++;
                 logger.log(LogStatus.FAIL, e.getMessage());
+                e.printStackTrace();
+                Assert.fail();
                 throw new RuntimeException(e);
             }
         }
         else{
             rowNum++;
+            throw new SkipException("Skipping this test due to configuration or condition");
         }
         extent.endTest(logger);
     }

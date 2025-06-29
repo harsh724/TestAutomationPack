@@ -108,6 +108,7 @@ public class Utilities extends TestBase {
     }
 
     public static List<WebElement> getWebElementList(String key){
+        waitForElementToBeVisible(key, 10);
         return driver.findElements(By.xpath(getObjProperty(key)));
     }
 
