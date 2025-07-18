@@ -11,7 +11,7 @@ import static utilities.Utilities.sendKeys;
 import static utilities.Utilities.waitForElementToBePresent;
 
 public class Timesheet extends TestBase {
-    public static void editAttendance(Hashtable<String, String> data){
+    public  void editAttendance(Hashtable<String, String> data){
         onClick("timeSheetButton");
         onClick("attendance");
         onClick("myRecords");
@@ -40,7 +40,7 @@ public class Timesheet extends TestBase {
         onClick("dashboadButton");
 
     }
-    public static void editTimesheet(Hashtable<String, String> data){
+    public  void editTimesheet(Hashtable<String, String> data){
         try {
             onClick("timeSheetButton");
             waitForElementToBeVisible("selectEmployee", 30);

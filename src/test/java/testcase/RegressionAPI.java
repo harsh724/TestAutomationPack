@@ -2,6 +2,7 @@ package testcase;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.testng.SkipException;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -48,6 +49,7 @@ public class RegressionAPI extends TestBase {
             String sheetName = m.getName();
             try {
                 String response = new JSONServices().jsonRequest("Automation Test", "POST");
+
                 new JSONServices();
                 System.out.println(response);
                 excel.setCellData(sheetName, "Response", rowNum, response);
@@ -71,6 +73,9 @@ public class RegressionAPI extends TestBase {
                 rowNum++;
                 throw new RuntimeException(e);
             }
+        }
+        else{
+            throw new SkipException("The Status status is marked as NO");
         }
     }
 

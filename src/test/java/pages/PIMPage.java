@@ -12,7 +12,7 @@ import java.util.List;
 import static utilities.Utilities.*;
 
 public class PIMPage extends TestBase {
-    public static void editRecord(Hashtable<String, String> data) {
+    public  void editRecord(Hashtable<String, String> data) {
         try {
             executeJSCommand(driver, "window.open()");
             ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());

@@ -5,6 +5,8 @@ import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.*;
 import pages.LoginPage;
+import pages.PIMPage;
+import pages.Timesheet;
 import testbase.TestBase;
 import utilities.ExcelReader;
 import utilities.Utilities;
@@ -14,10 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-
-import static pages.PIMPage.editRecord;
-import static pages.Timesheet.*;
-import static pages.Timesheet.editTimesheet;
 
 public class RegressionUI extends TestBase {
 
@@ -54,7 +52,7 @@ public class RegressionUI extends TestBase {
             logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
             String sheetName = m.getName();
             try {
-                editTimesheet(data);
+                new Timesheet().editTimesheet(data);
 
                 excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
@@ -82,7 +80,7 @@ public class RegressionUI extends TestBase {
             String sheetName = m.getName();
             try {
                 //editTimesheet(data);
-                editRecord(data);
+                new PIMPage().editRecord(data);
                 excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
                 logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
@@ -108,7 +106,7 @@ public class RegressionUI extends TestBase {
             logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
             String sheetName = m.getName();
             try {
-                editAttendance(data);
+                new Timesheet().editAttendance(data);
                 excel.setCellData(sheetName,"execution status", rowNum, "done" );
                 rowNum++;
                 logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
