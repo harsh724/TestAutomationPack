@@ -38,7 +38,6 @@ public class Utilities extends TestBase {
         }
         return data;
     }
-
     public static void onClick(String key){
         try {
             waitForElementToBeClickable(key, 30).click();
@@ -60,12 +59,10 @@ public class Utilities extends TestBase {
             throw new RuntimeException(e);
         }
     }
-
     public static void sendKeysWithJavaScript(String key, String command) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
         jsExecutor.executeScript("arguments[0].value='{0}';", command, waitForElementToBeVisible(key, 30));
     }
-
     public static String getText(String key){
         try {
             return waitForElementToBeVisible(key, 30).getText();
@@ -81,7 +78,6 @@ public class Utilities extends TestBase {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(getObjProperty(key))));
     }
-
     public static WebElement waitForElementToBePresent(String key, int duration){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
         return wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(getObjProperty(key))));
@@ -106,17 +102,14 @@ public class Utilities extends TestBase {
         }
         return null;
     }
-
     public static List<WebElement> getWebElementList(String key){
         waitForElementToBeVisible(key, 10);
         return driver.findElements(By.xpath(getObjProperty(key)));
     }
-
     // get Actions class object
     public static JavascriptExecutor getJSExecutorInstance(WebDriver driver) {
         return (JavascriptExecutor)driver;
     }
-
     public static void executeJSCommand(WebDriver driver, String command, WebElement inputElement) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
         jsExecutor.executeScript("arguments[0].execute{0}", command, inputElement);
@@ -125,15 +118,12 @@ public class Utilities extends TestBase {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
         jsExecutor.executeScript(command);
     }
-
-
     public static void takeFullScreenshot(WebDriver driver) throws IOException {
         String currentDir = System.getProperty("user.dir");
         File sc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         File ssLocation = new File(String.format("{0}/screenshot-{1}.png", currentDir, LocalDateTime.now().toString()));
         FileUtils.copyFile(sc,ssLocation);
     }
-
     public static void takeFullScreenshot(WebDriver driver, @Nullable String inputLocation) throws IOException {
         String currentDir = System.getProperty("user.dir");
         String saveLocation = inputLocation == null ? currentDir : inputLocation;
@@ -141,11 +131,9 @@ public class Utilities extends TestBase {
         File ssLocation = new File(String.format("{0}/screenshot-{1}.png", saveLocation, LocalDateTime.now().toString()));
         FileUtils.copyFile(sc,ssLocation);
     }
-
     public static Actions getActionsObject (WebDriver driver) {
         return new Actions(driver);
         }
-
     public static WebElement getShadowElement(WebDriver driver, String... selectors) {
         JavascriptExecutor js = (JavascriptExecutor)driver;
         StringBuilder script = new StringBuilder("return document");
@@ -159,6 +147,9 @@ public class Utilities extends TestBase {
         }
 
         return (WebElement) js.executeScript(script.toString());
+    }
+    public static void uploadFileToWeb(String key, String filePath){
+        driver.findElement(By.xpath(getObjProperty(key))).sendKeys(getProperty(filePath));
     }
 }
 

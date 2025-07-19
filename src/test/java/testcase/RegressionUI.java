@@ -1,9 +1,11 @@
 package testcase;
 
 import com.relevantcodes.extentreports.LogStatus;
+import groovy.util.logging.Log;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+import pages.Admin;
 import pages.LoginPage;
 import pages.PIMPage;
 import pages.Timesheet;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+
+import static utilities.Utilities.onClick;
 
 public class RegressionUI extends TestBase {
 
@@ -126,6 +130,29 @@ public class RegressionUI extends TestBase {
         }
         extent.endTest(logger);
 
+    }
+
+    @Test(dataProviderClass = Utilities.class, dataProvider = "dp", priority = 2, enabled = true)
+    public void admin(Hashtable<String, String> data, Method m){
+        if(data.get("Run").equalsIgnoreCase("yes")){
+            logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
+            String sheetName = m.getName();
+            try{
+                onClick("admin");
+                new Admin().corporateBranding();
+                rowNum++;
+            }catch (Exception e){
+                rowNum++;
+                logger.log(LogStatus.FAIL, e.getMessage());
+                e.printStackTrace();
+                Assert.fail();
+                throw new RuntimeException(e);
+            }
+        }
+        else{
+            rowNum++;
+            throw new SkipException("Skipping this test due to configuration or condition");
+        }
     }
 
 }

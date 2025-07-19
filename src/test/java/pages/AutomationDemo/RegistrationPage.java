@@ -23,7 +23,7 @@ public class RegistrationPage {
     @FindBy(xpath = "//input[@placeholder='Last Name']")
     private WebElement lastNameInput;
 
-    @FindBy(css = "textarea[ng-model='Adress']")
+    @FindBy(css = "textarea[ng-model='Address']")
     private WebElement addressInput;
 
     public void inputEmailAndEnter(String email) {
