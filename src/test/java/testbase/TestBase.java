@@ -1,5 +1,6 @@
 package testbase;
 
+import com.epam.healenium.SelfHealingDriver;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
@@ -29,7 +30,8 @@ import java.util.Properties;
 public class TestBase {
     public static ExcelReader excel;
     public static String path;
-    public static WebDriver driver = null;
+    public static SelfHealingDriver driver = null;
+    //public static WebDriver driver = null;
     public static ExtentReports extent;
     public static ExtentTest logger;
     public static final String PROPERTY_FILE_PATH = "src/test/java/resources/Config.properties";
@@ -82,7 +84,8 @@ public class TestBase {
             //LoggingPreferences loggingPreferences = new LoggingPreferences();
             //loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
             options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
-            driver = new ChromeDriver(options);
+            WebDriver delegate = new ChromeDriver(options);
+            driver = SelfHealingDriver.create(delegate);
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/webdriver/chromedriver");
             //options.setCapability("goog:loggingPrefs", loggingPreferences);
             driver.get(getProperty("baseURL"));
@@ -142,7 +145,7 @@ public class TestBase {
         if(browserName.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
-            driver = new ChromeDriver(options);
+            driver = SelfHealingDriver.create(new ChromeDriver(options));
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/webdriver/chromedriver");
             driver.get(getProperty("baseURL"));
             driver.manage().deleteAllCookies();
@@ -152,7 +155,7 @@ public class TestBase {
         else if (browserName.equalsIgnoreCase("edge")) {
             EdgeOptions options = new EdgeOptions();
             options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
-            driver = new EdgeDriver(options);
+            driver = SelfHealingDriver.create(new EdgeDriver(options));
             driver.get(getProperty("baseURL"));
             driver.manage().deleteAllCookies();
             return driver;
@@ -161,7 +164,7 @@ public class TestBase {
         else if (browserName.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
             options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
-            driver = new FirefoxDriver(options);
+            driver = SelfHealingDriver.create(new FirefoxDriver(options));
             driver.get(getProperty("baseURL"));
             driver.manage().deleteAllCookies();
             return driver;
