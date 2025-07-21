@@ -30,7 +30,7 @@ import java.util.Properties;
 public class TestBase {
     public static ExcelReader excel;
     public static String path;
-    public static SelfHealingDriver driver = null;
+    public static WebDriver driver = null;
     //public static WebDriver driver = null;
     public static ExtentReports extent;
     public static ExtentTest logger;
@@ -84,8 +84,8 @@ public class TestBase {
             //LoggingPreferences loggingPreferences = new LoggingPreferences();
             //loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
             options.addArguments("--remote-debugging-pipe", "--diable-gpu", "--diable-dev-shm-usage", "--start-maximized", "--disable-popup-blocking");
-            WebDriver delegate = new ChromeDriver(options);
-            driver = SelfHealingDriver.create(delegate);
+            //WebDriver delegate = new ChromeDriver(options);
+            driver = new ChromeDriver(options);
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/webdriver/chromedriver");
             //options.setCapability("goog:loggingPrefs", loggingPreferences);
             driver.get(getProperty("baseURL"));

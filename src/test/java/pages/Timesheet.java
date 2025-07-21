@@ -43,6 +43,8 @@ public class Timesheet extends TestBase {
     public  void editTimesheet(Hashtable<String, String> data){
         try {
             onClick("timeSheetButton");
+            onClick("timeSheetDropdown");
+            onClick("employeeTimesheet");
             waitForElementToBeVisible("selectEmployee", 30);
             onClick("viewButton");
             onClick("editButton");
