@@ -2,6 +2,8 @@ package testcase;
 
 import com.relevantcodes.extentreports.LogStatus;
 import groovy.util.logging.Log;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.*;
@@ -12,7 +14,9 @@ import pages.Timesheet;
 import testbase.TestBase;
 import utilities.ExcelReader;
 import utilities.Utilities;
+import utilities.WordReportUtils;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,27 +59,45 @@ public class RegressionUI extends TestBase {
         if(data.get("Run").equalsIgnoreCase("yes")) {
             logger = extent.startTest(m.getName()+"_"+data.get("Testcase")+":"+rowNum);
             String sheetName = m.getName();
+            String testName = m.getName() + "_" + data.get("Testcase");
+
+            // Start word doc for this test
+            WordReportUtils.startDoc(testName);
+
             try {
                 new Timesheet().editTimesheet(data);
 
-                excel.setCellData(sheetName,"execution status", rowNum, "done" );
-                rowNum++;
-                /*File scr = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-                File des = new File("");
-                FileUtils.copyFile(scr, des);*/
-                logger.log(LogStatus.INFO, "Total Validations: "+totalValuesMatchedCount+". Total Failure : "+totalFailCount+ ". Total PASSED : "+totalPassCount);
+                // Take multiple screenshots during execution
+                File scr1 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                WordReportUtils.addScreenshot(scr1, "After editTimesheet step");
+
+                // Possibly more steps & screenshots...
+                // File scr2 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                // WordReportUtils.addScreenshot(scr2, "After submitting form");
+
+                excel.setCellData(sheetName,"execution status", rowNum, "done");
+
+                logger.log(LogStatus.INFO, "Total Validations: " + totalValuesMatchedCount +
+                        ". Total Failure : " + totalFailCount +
+                        ". Total PASSED : " + totalPassCount);
             }
             catch (Exception e) {
-                rowNum++;
                 logger.log(LogStatus.FAIL, e.getMessage());
                 throw new RuntimeException(e);
             }
-        }
-        else{
+            finally {
+                rowNum++;
+                extent.endTest(logger);
+
+                // Save the doc
+                WordReportUtils.saveDoc();
+            }
+        } else {
             rowNum++;
         }
-        extent.endTest(logger);
     }
+
+
 
     @Test(dataProviderClass = Utilities.class, dataProvider = "dp", priority = 1, enabled = true)
     public void pimUpdate(Hashtable<String, String> data, Method m){

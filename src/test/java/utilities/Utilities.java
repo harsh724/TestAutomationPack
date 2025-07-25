@@ -1,6 +1,8 @@
 package utilities;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jspecify.annotations.Nullable;
@@ -11,8 +13,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.DataProvider;
 import testbase.TestBase;
 
-import java.io.File;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,6 +23,9 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class Utilities extends TestBase {
+    private static XWPFDocument document;
+    private static FileOutputStream outputStream;
+    private static String filePath;
 
     @DataProvider(name = "dp")
     public Object[][] getData(Method m){
@@ -151,5 +157,6 @@ public class Utilities extends TestBase {
     public static void uploadFileToWeb(String key, String filePath){
         driver.findElement(By.xpath(getObjProperty(key))).sendKeys(getProperty(filePath));
     }
+
 }
 
