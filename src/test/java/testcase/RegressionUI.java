@@ -68,12 +68,8 @@ public class RegressionUI extends TestBase {
                 new Timesheet().editTimesheet(data);
 
                 // Take multiple screenshots during execution
-                File scr1 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                WordReportUtils.addScreenshot(scr1, "After editTimesheet step");
+                Utilities.screenshotInDoc("After editTimeSheet step");
 
-                // Possibly more steps & screenshots...
-                // File scr2 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                // WordReportUtils.addScreenshot(scr2, "After submitting form");
 
                 excel.setCellData(sheetName,"execution status", rowNum, "done");
 

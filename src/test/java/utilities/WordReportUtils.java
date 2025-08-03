@@ -29,13 +29,11 @@ public class WordReportUtils {
     // Add image with caption
     public static void addScreenshot(File screenshotFile, String caption) {
         if (document == null) return;
-
         try {
             BufferedImage image = ImageIO.read(screenshotFile);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(image, "png", baos);
             ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
-
             XWPFParagraph paragraph = document.createParagraph();
             paragraph.setAlignment(ParagraphAlignment.LEFT);
             XWPFRun run = paragraph.createRun();

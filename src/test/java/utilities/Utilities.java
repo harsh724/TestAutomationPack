@@ -157,6 +157,10 @@ public class Utilities extends TestBase {
     public static void uploadFileToWeb(String key, String filePath){
         driver.findElement(By.xpath(getObjProperty(key))).sendKeys(getProperty(filePath));
     }
+    public static void screenshotInDoc(String heading){
+        File scr1 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        WordReportUtils.addScreenshot(scr1, heading);
+    }
 
 }
 
